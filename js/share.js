@@ -949,6 +949,7 @@
                 width: 220,
                 height: 220
             },
+            QRCodeState: false,
             size: ''
         }
         $.extend(true, _obj, obj);
@@ -957,7 +958,7 @@
             var types = $this.types;
             $(element).on($this.even, function(e){
                 e.preventDefault();
-                if(k === 'weixin'){
+                if(k === 'weixin' && !$this.QRCodeState){
                     $this.createQRCode()
                     return true;
                 }
@@ -973,6 +974,7 @@
 
         _obj.createQRCode = function(){
             var $this = this;
+            $this.QRCodeState = true;
             var $QRCodeWrap = $('<div class="qrcode-wrap">' +
                 '<div class="qrcode-head">\u5206\u4eab\u5230\u5fae\u4fe1\u670b\u53cb\u5708<i class="qrcode-close">×</i></div>' +
                 '<div class="qrcode-foot"><p>\u6253\u5f00\u5fae\u4fe1\uff0c\u70b9\u51fb\u5e95\u90e8\u7684\u201c\u53d1\u73b0\u201d\uff0c</p><p>\u4f7f\u7528\u201c\u626b\u4e00\u626b\u201d\u5373\u53ef\u5c06\u7f51\u9875\u5206\u4eab\u81f3\u670b\u53cb\u5708\u3002</p></div>' +
@@ -990,6 +992,7 @@
             $QRCodeWrap.css('top', top + 'px')
             qrcode.makeCode(window.location.href);
             $QRCodeWrap.find('.qrcode-close').click(function(){
+                $this.QRCodeState = false;
                 qrcode.clear();
                 $QRCodeWrap.remove();
             })
